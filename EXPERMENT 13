@@ -1,0 +1,18 @@
+void bestfit(int mp[], int p[], int m, int n) {
+    for (int j = 0; j < n; j++) {
+        int bestIndex = -1;
+        for (int i = 0; i < m; i++) {
+            if (mp[i] >= p[j]) {
+                if (bestIndex == -1 || mp[bestIndex] > mp[i]) {
+                    bestIndex = i;
+                }
+            }
+        }
+        if (bestIndex != -1) {
+            printf("\n%d fits in %d", p[j], mp[bestIndex]);
+            mp[bestIndex] -= p[j];
+        } else {
+            printf("\n%d must wait for its process", p[j]);
+        }
+    }
+}
