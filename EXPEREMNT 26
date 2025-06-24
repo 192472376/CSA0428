@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <string.h> // Include for memset
+
+extern int errno;
+
+int main() 
+{ 
+    errno = 0; // Reset errno to zero before the call
+    int fd = open("foo.txt", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR); // Use O_RDWR for read/write access
+    printf("fd = %d\n", fd); 
+    if (fd == -1) 
+    { 
+        printf("Error Number: %d\n", errno); 
+        perror("Program"); 
+    } 
+    return 0; 
+}
