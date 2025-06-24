@@ -1,0 +1,33 @@
+void allocateMemory(int processId, int size) {
+    int start = -1, blockSize = 0, maxBlockSize = 0, maxStart = -1;
+
+    for (int i = 0; i < MAX_MEMORY; i++) {
+        if (memory[i] == -1) {
+            if (blockSize == 0) {
+                start = i; // Mark the start of a free block
+            }
+            blockSize++;
+        } else {
+            if (blockSize > maxBlockSize) {
+                maxBlockSize = blockSize; // Update max block size
+                maxStart = start; // Update max start index
+            }
+            blockSize = 0; // Reset block size
+        }
+    }
+
+    // Check at the end of the loop in case the largest block is at the end
+    if (blockSize > maxBlockSize) {
+        maxBlockSize = blockSize;
+        maxStart = start;
+    }
+
+    if (maxBlockSize >= size) {
+        for (int i = maxStart; i < maxStart + size; i++) {
+            memory[i] = processId; // Allocate memory
+        }
+        printf("Allocated memory block %d-%d to Process %d\n", maxStart, maxStart + size - 1, processId);
+    } else {
+        printf("Memory allocation for Process %d failed (not enough contiguous memory).\n", processId);
+    }
+}
