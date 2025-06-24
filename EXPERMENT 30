@@ -1,0 +1,31 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void* func(void* arg) {
+    printf("Inside the thread\n");
+    pthread_exit(NULL);
+}
+
+void fun() {
+    pthread_t ptid;
+    pthread_create(&ptid, NULL, &func, NULL);
+    printf("This line may be printed before thread terminates\n");
+
+    // Check if the created thread is equal to the current thread
+    if (pthread_equal(ptid, pthread_self())) {
+        printf("Threads are equal\n");
+    } else {
+        printf("Threads are not equal\n");
+    }
+
+    // Remove the pthread_join call since the thread is detached
+    // pthread_join(ptid, NULL); // This line is removed
+    printf("This line will be printed after thread ends\n");
+    pthread_exit(NULL);
+}
+
+int main() {
+    fun();
+    return 0;
+}
